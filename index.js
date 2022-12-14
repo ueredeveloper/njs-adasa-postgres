@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
+var cors = require('cors');
 const { convertionPolygonToPostgis } = require('./tools');
 
 app.use(express.static('public'));
 app.use(express.json());
+app.use(cors());
 
 const { createClient } = require('@supabase/supabase-js');
 
@@ -18,10 +20,12 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 app.post('/findPointsInsidePolygon', async function(req, res) {
 
   let polygon = convertionPolygonToPostgis(req.body);
+
+  ////console.log(polygon)
   const { data, error } = await supabase
     .rpc('findpointsinsidepolygon', { polygon: polygon })
   if (error) {
-    console.log(error)
+    //console.log(error)
   } else {
     res.send(JSON.stringify(data))
   }
@@ -41,7 +45,7 @@ app.post('/findPointsInsideRectangle', async function(req, res) {
   const { data, error } = await supabase
     .rpc('findpointsinsiderectangle', { nex: nex, ney: ney, swx: swx, swy: swy })
   if (error) {
-    console.log(error)
+    //console.log(error)
   } else {
     res.send(JSON.stringify(data))
   }
@@ -57,7 +61,39 @@ app.post('/findPointsInsideCircle', async function(req, res) {
     );
 
   if (error) {
-    console.log(error)
+    //console.log(error)
+  } else {
+    res.send(JSON.stringify(data))
+  }
+});
+
+app.post('/findPointsInsidePolygon', async function(req, res) {
+
+  let polygon = convertionPolygonToPostgis(req.body);
+
+  //console.log(polygon)
+  const { data, error } = await supabase
+    .rpc('findpointsinsidepolygon', { polygon: polygon })
+  if (error) {
+    //console.log(error)
+  } else {
+    res.send(JSON.stringify(data))
+  }
+});
+
+/**
+* Busca pontos na tabela superficial.
+* @param polígono Polígono onde ser que encontrar pontos.
+  **/
+app.post('/findSuperficialPointsInsidePolygon', async function(req, res) {
+
+  let polygon = convertionPolygonToPostgis(req.body);
+
+  //console.log(polygon)
+  const { data, error } = await supabase
+    .rpc('findsuperficialpointsinsidepolygon', { polygon: polygon })
+  if (error) {
+    //console.log(error)
   } else {
     res.send(JSON.stringify(data))
   }
@@ -65,5 +101,5 @@ app.post('/findPointsInsideCircle', async function(req, res) {
 
 const port = 3000;
 app.listen(port, function() {
-  console.log(`porta ${port}`)
+  //console.log(`porta ${port}`)
 })
