@@ -5,6 +5,12 @@
   </head>
   <body>
    <div id="map"></div>
+    <input type="checkbox" id="cb_fraturado" name="cb_fraturado" value="cb_fraturado" onclick="getShape('hidrogeo_fraturado')">
+    <label for="cb_fraturado"> fraturado </label>
+
+    <input type="checkbox" id="cb_poroso" name="cb_poroso" value="cb_poroso" onclick="getShape('hidrogeo_poroso')">
+    <label for="cb_fraturado"> poroso </label>
+    
     <div> 
      <script
       src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap&libraries=drawing&v=weekly"

@@ -99,6 +99,26 @@ app.post('/findSuperficialPointsInsidePolygon', async function(req, res) {
   }
 });
 
+/**
+* Busca a shape do fraturado ou poroso, de acordo com a pesquisa
+* @param shape Shape do fraturado - hidrogeo_fraturado ou poroso 
+* @return Retorna polígonos - shapes para inserção no mapa.
+  **/
+app.get('/getShape', async function(req, res) {
+
+  let { shape } = req.query;
+  console.log(shape)
+
+  const { data, error } = await supabase
+    .from(shape)
+    .select()
+  if (error) {
+    res.send(JSON.stringify(error))
+  } else {
+    res.send(JSON.stringify(data))
+  }
+});
+
 const port = 3000;
 app.listen(port, function() {
   //console.log(`porta ${port}`)

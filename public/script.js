@@ -34,8 +34,8 @@ function initMap() {
     },
   });
 
-  function setIcon(value){
-    if(value==2) {
+  function setIcon(value) {
+    if (value == 2) {
       return `https://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png`
     } else {
       return `https://www.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png`
@@ -54,7 +54,7 @@ function initMap() {
       polygon = [...polygon, polygon[0]]
       findPointsInsidePolygon(polygon).then(points => {
         console.log(points.length, points)
-        
+
         points.forEach(p => {
           let _p = p.int_shape.coordinates;
           new google.maps.Marker({
@@ -68,7 +68,7 @@ function initMap() {
     }
     if (event.type == 'circle') {
       let { center, radius } = event.overlay;
-      
+
       findPointsInsideCircle(
         {
           center: { lng: center.lng(), lat: center.lat() },
@@ -88,9 +88,9 @@ function initMap() {
         });
     }
     if (event.type == 'marker') {
-     /* let point = event.overlay.position;
-      console.log(`${point.lng()},${point.lat()}`)
-      insertPoint({ lat: point.lat(), lng: point.lng() })*/
+      /* let point = event.overlay.position;
+       console.log(`${point.lng()},${point.lat()}`)
+       insertPoint({ lat: point.lat(), lng: point.lng() })*/
     }
     if (event.type == 'rectangle') {
       let bounds = event.overlay.getBounds();
@@ -126,7 +126,7 @@ function initMap() {
 
 window.initMap = initMap;
 
-let url = 'https://adasa-postgres.ueredeveloper.repl.co';
+let url = 'https://njs-adasa-postgres.ueredeveloper.repl.co';
 
 async function findPointsInsidePolygon(polygon) {
   console.log(polygon)
@@ -172,5 +172,30 @@ async function insertPoint(point) {
   }).then(response => {
     console.log(response)
   })
+
+}
+
+
+async function getShape(shape) {
+
+  if (shape === 'hidrogeo_fraturado') {
+    var checkbox = document.getElementById("cb_fraturado");
+
+    if (checkbox.checked === true) {
+      
+      let _shape = await fetch(url + '/getShape?shape=hidrogeo_fraturado', {
+        method: 'GET'
+      }).then(res => {
+        return res.json()
+      });
+
+      console.log(_shape)
+    } else {
+      console.log('unchecked')
+    }
+
+  }
+
+
 
 }
